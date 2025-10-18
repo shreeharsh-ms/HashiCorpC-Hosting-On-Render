@@ -1,10 +1,17 @@
-# Dockerfile
+# Use official Vault image
 FROM hashicorp/vault:1.14.3
 
-# Optional: Add your custom configuration files
+# Create Vault config directory
+RUN mkdir -p /vault/config /vault/file
+
+# Copy config
 COPY vault-config.hcl /vault/config/vault-config.hcl
 
-# Expose the Vault port
+# Set working directory
+WORKDIR /vault
+
+# Expose Vault port
 EXPOSE 8200
 
-CMD ["vault", "server", "-config=/vault/config/vault-config.hcl"]
+# Run Vault server in dev mode with root token
+CMD ["vault", "server", "-dev", "-dev-root-token-id=root"]
