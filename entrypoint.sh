@@ -1,27 +1,32 @@
 #!/bin/bash
 set -e
 
-# Wait for PostgreSQL to be ready
-until pg_isready -h dpg-d3piv8jipnbc739v0d60-a -p 5432 -U vault_db_m7gc_user; do
+# Wait for PostgreSQL
+until pg_isready -h "$VAULT_DB_HOST" -p "$VAULT_DB_PORT" -U "$VAULT_DB_USER"; do
   echo "Waiting for PostgreSQL..."
   sleep 2
 done
 
 echo "PostgreSQL ready. Starting Vault..."
 
-# Start Vault in the background
+# Start Vault in background
 vault server -config=/vault/config/vault-config.hcl &
 VAULT_PID=$!
 
-# Wait a few seconds for Vault to be ready to accept requests
-sleep 5
+# Wait for Vault to start listening
+echo "Waiting for Vault to become ready..."
+export VAULT_ADDR="http://127.0.0.1:${PORT}"
+until vault status >/dev/null 2>&1; do
+  echo "Vault not ready yet..."
+  sleep 2
+done
 
-# Check if Vault is initialized
-if ! vault status | grep -q 'Initialized.*true'; then
-    echo "Initializing Vault..."
-    vault operator init -key-shares=1 -key-threshold=1 -format=json > /vault/init.json
-    echo "Vault initialized. Keys and token saved in /vault/init.json"
+# Initialize if needed
+if ! vault status -format=json | jq -e '.initialized' >/dev/null; then
+  echo "Initializing Vault..."
+  vault operator init -key-shares=1 -key-threshold=1 -format=json > /vault/init.json
+  echo "Vault initialized. Keys and token saved in /vault/init.json"
 fi
 
-# Wait indefinitely (or until Vault exits)
+# Keep Vault running
 wait $VAULT_PID
