@@ -6,8 +6,10 @@ listener "tcp" {
 }
 
 storage "postgresql" {
-  connection_url = "postgresql://vault_user:puxre8-cucqar-Xunryd@aws-1-us-east-1.pooler.supabase.com:6543/postgres?sslmode=require"
+  connection_url = "vault_user://postgres.ctsgvdupihtowsceuvhv:puxre8-cucqar-Xunryd@aws-1-us-east-1.pooler.supabase.com:5432/postgres"
   table          = "vault_kv_store"  # Vault will create this table if it doesn't exist
 }
 
 disable_mlock = true  # Required on unprivileged containers like Render
+
+
