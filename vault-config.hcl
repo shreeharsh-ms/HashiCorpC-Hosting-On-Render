@@ -6,7 +6,7 @@ listener "tcp" {
 }
 
 storage "postgresql" {
-  connection_url = "vault_user://postgres.ctsgvdupihtowsceuvhv:puxre8-cucqar-Xunryd@aws-1-us-east-1.pooler.supabase.com:5432/postgres"
+  connection_url = "postgresql://postgres.ctsgvdupihtowsceuvhv:puxre8-cucqar-Xunryd@aws-1-us-east-1.pooler.supabase.com:5432/postgres"
   table          = "vault_kv_store"  # Vault will create this table if it doesn't exist
 }
 
