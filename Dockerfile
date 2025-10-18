@@ -1,8 +1,15 @@
-# Use the official Vault image
-FROM hashicorp/vault:1.14.1
+FROM ubuntu:22.04
 
-# Expose Vault default port
+RUN apt-get update && apt-get install -y curl unzip
+
+# Download Vault binary
+RUN curl -O https://releases.hashicorp.com/vault/1.14.1/vault_1.14.1_linux_amd64.zip \
+    && unzip vault_1.14.1_linux_amd64.zip \
+    && mv vault /usr/local/bin/ \
+    && rm vault_1.14.1_linux_amd64.zip
+
 EXPOSE 8200
 
-# Run Vault in dev mode (root token: root)
-CMD ["vault", "server", "-dev", "-dev-root-token-id=root"]
+COPY vault-config.hcl /vault/config/vault-config.hcl
+
+CMD ["vault", "server", "-config=/vault/config/vault-config.hcl"]
