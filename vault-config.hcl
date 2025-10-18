@@ -1,7 +1,7 @@
 # Vault configuration using environment variables for PostgreSQL backend
 
 storage "postgresql" {
-  connection_url = "postgresql://${DB_USER}:${DB_PASSWORD}@${DB_HOST}:${DB_PORT}/${DB_NAME}?sslmode=disable"
+  connection_url = "postgresql://vault_db_m7gc_user:ZEtRmToZ5qmKpHzrjRbDsBuMQy2CjCzG@dpg-d3piv8jipnbc739v0d60-a:5432/vault_db_m7gc?sslmode=disable"
 }
 
 listener "tcp" {
