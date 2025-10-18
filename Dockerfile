@@ -8,8 +8,10 @@ RUN curl -O https://releases.hashicorp.com/vault/1.14.1/vault_1.14.1_linux_amd64
     && mv vault /usr/local/bin/ \
     && rm vault_1.14.1_linux_amd64.zip
 
-EXPOSE 8200
-
+# Set Vault config directory
+RUN mkdir -p /vault/config
 COPY vault-config.hcl /vault/config/vault-config.hcl
+
+EXPOSE $PORT
 
 CMD ["vault", "server", "-config=/vault/config/vault-config.hcl"]
