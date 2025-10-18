@@ -1,16 +1,12 @@
-# Enable Vault UI
 ui = true
 
-# TCP listener
 listener "tcp" {
   address     = "0.0.0.0:8200"
-  tls_disable = 1
+  tls_disable = 1   # For production, replace with proper TLS
 }
 
-# Storage backend (file for dev/testing)
 storage "file" {
-  path = "/vault/file"
+  path = "/vault/data"
 }
 
-# Disable mlock (needed for Render)
-disable_mlock = true
+disable_mlock = true   # Required on unprivileged containers like Render
