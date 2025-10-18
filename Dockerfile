@@ -13,6 +13,6 @@ COPY vault-config.hcl /vault/config/vault-config.hcl
 COPY entrypoint.sh /vault/entrypoint.sh
 RUN chmod +x /vault/entrypoint.sh
 
-EXPOSE $PORT
+EXPOSE 8200
 
 ENTRYPOINT ["/vault/entrypoint.sh"]
